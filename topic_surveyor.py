@@ -2,19 +2,41 @@ import streamlit as st
 import pandas as pd
 from collections import Counter
 import matplotlib.pyplot as plt
+import geopandas as gpd
 
+
+@st.cache_resource
+def load_map(shx_file):
+    map_df = gpd.read_file(shx_file)
+    return map_df
 
 st.set_page_config(layout="wide")
+
+
+shx_file = "data//tur_polbnda_adm1.shx"
+map_df = load_map(shx_file)
+#map_df.plot(figsize=(20, 10))
+#st.pyplot(map_df)
+
+plt.figure(figsize=(10, 5))
+map_df.plot(color='slategrey', ax=plt.gca())
+plt.axis('off')
+
+
+
+
 st.write("""
-# Disaster Monitor
+# Disaster Monitor | Türkiye | Glide ID EQ-2023-000015-TUR
 This is a proof of concept to see what is possible by leveraging secondary data sources from reliefweb.
 """)
 
-st.write("Instructions: Upload the ongoing.xlsx file here. Note for the POC this will only show Turkiye.")
+#st.write("Instructions: Upload the ongoing.xlsx file here. Note for the POC this will only show Turkiye.")
 
 col1, col2 = st.columns(2)
 with col1:
-    uploaded_file = st.file_uploader("Upload a summary file")
+    st.pyplot(plt)
+
+    #uploaded_file = st.file_uploader("Upload a summary file")
 
 with col2:
     desc_text = """Type in a date in YYYY-MM-DD format. This will serve as the simulated present."
@@ -27,9 +49,9 @@ df_full = pd.read_excel("data//ongoing.xlsx")
 
 #st.dataframe(df_test.head(4))
 
-if uploaded_file:
+#if uploaded_file:
     #st.write(f"Filename: {uploaded_file}")
-    df_full = pd.read_excel(uploaded_file)
+#    df_full = pd.read_excel(uploaded_file)
 
 
 
