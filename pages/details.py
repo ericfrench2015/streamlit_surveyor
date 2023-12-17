@@ -76,7 +76,7 @@ st.write("Below is a random sampling of 2 df rows so you can see what columns ar
 st.dataframe(df_full.sample(2),use_container_width=True)
 
 st.subheader("Indicator Selector: Filter statements to your preferred topic area")
-st.write("Each indicator has a set of keywords (TODO: Expose these for transparency)"
+st.write("Each indicator has a set of keywords (TODO: Expose these for transparency) "
          "select one and you'll see statements related to that area.")
 indicators = get_indicator_columns(df)
 ind_opt = st.selectbox('indicator_selector', indicators)
