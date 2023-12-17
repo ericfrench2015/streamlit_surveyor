@@ -25,9 +25,9 @@ def get_indicator_columns(df):
     return inds
 
 
-st.set_page_config(layout="wide")
+#st.set_page_config(layout="wide")
 st.write("""
-# Disaster Monitor Details
+# Türkiye | Glide ID EQ-2023-000015-TUR
 This is a proof of concept to see what is possible by leveraging secondary data sources from reliefweb.
 """)
 desc_text = """Type in a date in YYYY-MM-DD format. This will serve as the simulated present."
@@ -40,7 +40,7 @@ map_df = load_map(shx_file)
 #st.pyplot(map_df)
 
 plt.figure(figsize=(10, 5))
-map_df.plot(ax=plt.gca())
+map_df.plot(color='slategrey', ax=plt.gca())
 plt.axis('off')
 
 col1, col2 = st.columns(2)
