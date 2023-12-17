@@ -25,7 +25,7 @@ def get_indicator_columns(df):
     return inds
 
 
-#st.set_page_config(layout="wide")
+st.set_page_config(layout="wide")
 st.write("""
 # Türkiye | Glide ID EQ-2023-000015-TUR
 This is a proof of concept to see what is possible by leveraging secondary data sources from reliefweb.
