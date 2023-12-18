@@ -15,6 +15,8 @@ st.set_page_config(layout="wide")
 
 shx_file = "data//tur_polbnda_adm1.shx"
 map_df = load_map(shx_file)
+map_df.set_crs("EPSG:4326", inplace=True)
+#st.write("HERE :" ,  map_df.crs)
 #map_df.plot(figsize=(20, 10))
 #st.pyplot(map_df)
 
