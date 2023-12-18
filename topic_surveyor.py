@@ -7,7 +7,24 @@ import geopandas as gpd
 
 @st.cache_resource
 def load_map(shx_file):
+    def set_color(x):
+
+        affected = ['ADANA', 'ADIYAMAN', 'DIYARBAKIR', 'SANLIURFA', 'KILIS', 'OSMANIYE', 'ELAZIG']
+        extreme = ['KAHRAMANMARAS', 'HATAY']
+        if x in affected:
+            return 10
+        if x in extreme:
+            return 20
+        else:
+            return 8
+
+
     map_df = gpd.read_file(shx_file)
+    map_df['count'] = map_df['adm1_en'].apply(set_color)
+
+
+
+
     return map_df
 
 st.set_page_config(layout="wide")
@@ -21,7 +38,7 @@ map_df.set_crs("EPSG:4326", inplace=True)
 #st.pyplot(map_df)
 
 plt.figure(figsize=(10, 5))
-map_df.plot(color='slategrey', ax=plt.gca())
+map_df.plot(column='count', cmap='Reds', ax=plt.gca())
 plt.axis('off')
 
 
