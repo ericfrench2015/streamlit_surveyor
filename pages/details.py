@@ -20,7 +20,7 @@ def load_map(shx_file):
             return 8
 
     map_df = gpd.read_file(shx_file)
-    map_df['count'] = map_df['adm1_en'].apply(set_color)
+    #map_df['count'] = map_df['adm1_en'].apply(set_color)
     return map_df
 
 
@@ -57,20 +57,20 @@ map_df.set_crs("EPSG:4326", inplace=True)
 
 
 #reds_cmap = plt.cm.get_cmap('Reds')
-reds_cmap = plt.colormaps['Reds']
+#reds_cmap = plt.colormaps['Reds']
 
 # Creating a copy of the 'Blues' colormap
-new_colors = reds_cmap(np.linspace(0, 1, 256))
+#new_colors = reds_cmap(np.linspace(0, 1, 256))
 # Making the lightest shade darker
-new_colors[0] = (.95, .95, .95, 1.0)  # Adjust RGB values to darken the lightest shade
+#new_colors[0] = (.95, .95, .95, 1.0)  # Adjust RGB values to darken the lightest shade
 # Creating a new colormap
-new_reds_cmap = LinearSegmentedColormap.from_list('reds_cmap', new_colors)
+#new_reds_cmap = LinearSegmentedColormap.from_list('reds_cmap', new_colors)
 
 
 
 plt.figure(figsize=(10, 5))
-#map_df.plot(color='slategrey', ax=plt.gca())
-map_df.plot(column='count', cmap=new_reds_cmap, ax=plt.gca())
+map_df.plot(color='slategrey', ax=plt.gca())
+#map_df.plot(column='count', cmap=new_reds_cmap, ax=plt.gca())
 plt.axis('off')
 
 col1, col2 = st.columns(2)
