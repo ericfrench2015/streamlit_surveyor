@@ -41,7 +41,8 @@ map_df.set_crs("EPSG:4326", inplace=True)
 
 
 
-reds_cmap = plt.cm.get_cmap('Reds')
+#reds_cmap = plt.cm.get_cmap('Reds')
+reds_cmap = plt.colormaps['Reds']
 # Creating a copy of the 'Blues' colormap
 new_colors = reds_cmap(np.linspace(0, 1, 256))
 # Making the lightest shade darker
