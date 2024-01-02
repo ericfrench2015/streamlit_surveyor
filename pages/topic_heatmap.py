@@ -22,7 +22,8 @@ def load_joint_sent_and_location():
 
 
 
-st.header("Topic Matrix over time and by location (note this mixes Turkiye and Syrian Locations for now")
+st.header("Topic Matrix over time and by location")
+st.write("note this mixes Turkiye and Syrian Locations for now")
 
 
 df_situation = load_joint_sent_and_location()
@@ -36,9 +37,16 @@ df_heatmap_reference = df_situation[cols].copy()
 
 from_date = st.text_input(f"From: ", '2023-01-01')
 to_date = st.text_input(f"To: ", '2023-12-31')
+search_string = st.text_input(f"arbitrary search string: ", '')
 
 df_heatmap = df_heatmap_reference[(df_heatmap_reference['reported_date'] >= from_date) & \
     (df_heatmap_reference['reported_date'] <= to_date)]
+
+df_heatmap['spacy_para_no_paren'].fillna('', inplace=True)
+
+if search_string != '':
+    df_heatmap = df_heatmap[df_heatmap['spacy_para_no_paren'].str.contains(search_string)]
+
 
 df_heatmap = df_heatmap[cols].groupby('identified_adm_01').sum().reset_index()
 df_heatmap = df_heatmap[df_heatmap['identified_adm_01'] != 'Turkey or Syria']
@@ -70,8 +78,13 @@ st.pyplot(plt)
 location = st.text_input(f"location: ", 'Aleppo')
 topic = st.text_input(f"topic: ", 'i_wash')
 
-st.dataframe(df_heatmap_reference[(df_heatmap_reference['identified_adm_01'] == location) & \
-    (df_heatmap_reference[topic] == 1)],use_container_width=True)
+df_content = df_heatmap_reference[(df_heatmap_reference['identified_adm_01'] == location) & \
+    (df_heatmap_reference[topic] == 1)]
+
+if search_string != '':
+    st.dataframe(df_content[df_content['spacy_para_no_paren'].str.contains(search_string)], use_container_width=True)
+else:
+    st.dataframe(df_content,use_container_width=True)
 
 
 
