@@ -22,7 +22,7 @@ def load_joint_sent_and_location():
 
     return df_situation
 
-
+df_for_display = '' #lazy... to avoid exception when df isn't defined
 
 st.header("Topic Matrix over time and by location")
 st.write("note this mixes Turkiye and Syrian Locations for now")
@@ -37,9 +37,17 @@ chart_columns = ['i_killed', 'i_injured', 'i_damage', 'i_infrastructure', 'i_was
 
 df_heatmap_reference = df_situation[cols].copy()
 
-from_date = st.text_input(f"From: ", '2023-01-01')
-to_date = st.text_input(f"To: ", '2023-12-31')
-search_string = st.text_input(f"arbitrary search string: ", '')
+col1, col2, col3 = st.columns(3)
+with col1:
+    from_date = st.text_input(f"From: ", '2023-01-01')
+with col2:
+    to_date = st.text_input(f"To: ", '2023-12-31')
+with col3:
+    search_string = st.text_input(f"arbitrary search string: ", '')
+
+
+
+
 
 df_heatmap = df_heatmap_reference[(df_heatmap_reference['reported_date'] >= from_date) & \
     (df_heatmap_reference['reported_date'] <= to_date)]
@@ -48,9 +56,17 @@ df_heatmap['spacy_para_no_paren'].fillna('', inplace=True)
 
 if search_string != '':
     df_heatmap = df_heatmap[df_heatmap['spacy_para_no_paren'].str.contains(search_string)]
+    df_for_display = df_heatmap.copy()
 
+
+#df_heatmap['identified_adm_01'] = df_heatmap['identified_adm_01'].fillna('')
+#df_heatmap['identified_adm_01'] = df_heatmap['identified_adm_01'].astype(str)
+#df_heatmap['identified_adm_01'] = df_heatmap['identified_adm_01'].convert_dtypes()
+df_heatmap['reported_date'] = df_heatmap['reported_date'].astype(str)
+#st.write(df_heatmap.dtypes)
 
 df_heatmap = df_heatmap[cols].groupby('identified_adm_01').sum().reset_index()
+
 df_heatmap = df_heatmap[df_heatmap['identified_adm_01'] != 'Turkey or Syria']
 df_heatmap = df_heatmap[df_heatmap['i_shelter'] != 0]
 df_heatmap.set_index('identified_adm_01', inplace=True)
@@ -76,9 +92,18 @@ plt.ylabel('identified_adm_01')
 plt.tight_layout()
 st.pyplot(plt)
 
+if isinstance(df_for_display, str):
+    pass
+else:
+    st.dataframe(df_for_display)
 
-location = st.text_input(f"location: ", 'Aleppo')
-topic = st.text_input(f"topic: ", 'i_wash')
+
+
+col1, col2 = st.columns(2)
+with col1:
+    location = st.text_input(f"location: ", 'Aleppo')
+with col2:
+    topic = st.text_input(f"topic: ", 'i_wash')
 
 df_content = df_heatmap_reference[(df_heatmap_reference['identified_adm_01'] == location) & \
     (df_heatmap_reference[topic] == 1)]
