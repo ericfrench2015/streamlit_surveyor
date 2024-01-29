@@ -9,8 +9,17 @@ def load_df():
 
     return df
 
+@st.cache_resource
+def load_svot():
+    df = pd.read_excel("data//situation_reports.xlsx")
+    df = df.explode('svot')
+
+    return df
+
+
 
 df_keywords = load_df()
+df_svot = load_svot()
 
 
 
@@ -32,4 +41,12 @@ if len(filtered_df) == 0:
 
 
 
+
 st.dataframe(filtered_df,use_container_width=True)
+
+st.header("Identified Subject/Verb/Object Combinations")
+
+df_svot = df_svot.explode('svot')
+st.dataframe(df_svot[['reported_date','svot']][(df_svot['svot'] != '[]') & (df_svot['reported_date'] == selected_date)],use_container_width=True)
+
+

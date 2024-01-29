@@ -151,3 +151,27 @@ st.write("pandas df wrapping issue. If you want to see the full content of the s
          "then left click it.... just go with it")
 df_show = df[['reference_date_iso','source_original_text','reference_auth_org']][df['num_killed_int'] > 0]
 st.dataframe(df_show.sort_values(by='reference_date_iso', ascending=False),use_container_width=True)
+
+
+
+
+# Create a scatter plot
+
+df = df_full[df_full['reference_date_iso'] <= date_of_reference]
+df = df[(df['identified_country'] == 'Türkiye') & (df['glide_id'] == 'EQ-2023-000015-TUR')]
+df = df.sort_values(by='reference_date_iso')
+
+def plot_individual_reports(df):
+    plt.figure(figsize=(10, 3))
+    plt.scatter(df['reference_date_iso'], df['num_killed_int'])
+
+    # Add labels and title
+    plt.xlabel('Date')
+    plt.ylabel('Discrete Death Count')
+    plt.title('Reported Killed Over Time')
+    plt.xticks(rotation=90, fontsize=6)
+
+    # Show the plot
+    st.pyplot(plt)
+
+plot_individual_reports(df)
